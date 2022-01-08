@@ -5,7 +5,9 @@ void makeSquare(float x_cord, float y_cord, float z_cord, float red_value, float
 static void error_callback(int error, const char* description);
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 float randomZeroOne(void);
-void render_simulation_frame(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION]);
+void render_frame(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION]);
+void master_update(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION]);
+void water_update(int x, int y, simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION]);
 
 //--------- Define functions ---------
 // Create a square with the input of the center of the square, rgb color of the square, and the width
@@ -61,7 +63,8 @@ float randomZeroOne(void)
     return((float) rand() / RAND_MAX);
 }
 
-void render_simulation_frame(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION])
+// Render thr current state of the pixel array input
+void render_frame(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION])
 {
     // Render Pixels
     for (int i = 0; i < SIMULATION_GRID_RESOLUTION; i++)
@@ -76,13 +79,55 @@ void render_simulation_frame(simulation_pixel pixel_data_array[(int)SIMULATION_G
             if (pixel_data_array[i][j].element == WATER)
             {
                 makeSquare(-1 + ((1/SIMULATION_GRID_RESOLUTION) * i * 2) + (1/SIMULATION_GRID_RESOLUTION), -1 + ((1/SIMULATION_GRID_RESOLUTION) * j * 2) + (1/SIMULATION_GRID_RESOLUTION), 0, 0, 0, 1, 2/SIMULATION_GRID_RESOLUTION);
+                if (countWaterON == true) {
+                    waterCount++;
+                }
             }
             // Air Rendering
             if (pixel_data_array[i][j].element == AIR)
             {
                 makeSquare(-1 + ((1/SIMULATION_GRID_RESOLUTION) * i * 2) + (1/SIMULATION_GRID_RESOLUTION), -1 + ((1/SIMULATION_GRID_RESOLUTION) * j * 2) + (1/SIMULATION_GRID_RESOLUTION), 0, 0.8, 0.8, 1, 2/SIMULATION_GRID_RESOLUTION);
             }
+            pixel_data_array[i][j].updated_this_cycle = false;
         }
     }
 }
+
+// Update the current state of the entire pixel array inputted
+void master_update(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION])
+{
+    for (int x = 0; x < SIMULATION_GRID_RESOLUTION; x++)
+    {
+        for (int y = 0; y < SIMULATION_GRID_RESOLUTION; y++) {
+            if (pixel_data_array[x][y].updated_this_cycle == false)
+            {
+                // Update Water Pixels when detected
+                if (pixel_data_array[x][y].element == WATER) {
+                    water_update(x, y, pixel_data_array);
+                }
+            }
+            
+        }
+    }
+}
+
+// Update a water particle when detected. (x, y) is location of detected water particle
+void water_update(int x, int y, simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION])
+{
+    if (pixel_data_array[x][y-1].element == AIR) {
+        pixel_data_array[x][y].velocity.y++;
+        int fall_distance = 1;
+        while (fall_distance < pixel_data_array[x][y].velocity.y && pixel_data_array[x][y - (fall_distance + 1)].element == AIR)
+        {
+            fall_distance++;
+        }
+        simulation_pixel temp = pixel_data_array[x][y-fall_distance];
+        pixel_data_array[x][y-fall_distance] = pixel_data_array[x][y];
+        pixel_data_array[x][y] = temp;
+        pixel_data_array[x][y-fall_distance].updated_this_cycle = true;
+    }
+    
+}
+
+
 #endif

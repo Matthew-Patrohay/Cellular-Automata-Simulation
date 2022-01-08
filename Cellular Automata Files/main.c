@@ -35,20 +35,27 @@ int main(void)
     {
         for (int j = 0; j < SIMULATION_GRID_RESOLUTION; j++)
         {
-            //Set all current pixels to air
+            // Set all current pixels to air
             pixel_array[i][j].element = AIR;
             
-            //Set a few random pixels to water for testing
+            // Set a few random pixels to water for testing
             if (randomZeroOne() > 0.9)
             {
                 pixel_array[i][j].element = WATER;
             }
             
-            //Set the border to walls
+            // Set the border to walls
             if (i <= 1 || j <= 1 || i >= (SIMULATION_GRID_RESOLUTION - 2) || j >= (SIMULATION_GRID_RESOLUTION - 2))
             {
                 pixel_array[i][j].element = WALL;
             }
+            
+            // Set inital velocities to zero
+            pixel_array[i][j].velocity.x = 0;
+            pixel_array[i][j].velocity.y = 0;
+            
+            // Set initial update value to false
+            pixel_array[i][j].updated_this_cycle = false;
         }
     }
     
@@ -66,13 +73,24 @@ int main(void)
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(-ratio, ratio, -1, 1, 1, -1);
+        // Update the current state of the pixel array
+        master_update(pixel_array);
         
         // Render the current state of the pixel array
-        render_simulation_frame(pixel_array);
+        render_frame(pixel_array);
         
         // Swap front and back buffers and poll events
         glfwSwapBuffers(window);
         glfwPollEvents();
+        
+        // Sleep to simulate slow motion
+        if (slowspeed > 0) {
+            sleep(slowspeed);
+        }
+        if (countWaterON == true) {
+            printf("Water Particle Count = %d\n", waterCount);
+            waterCount = 0;
+        }
     }
     
     // Close window and end glfw

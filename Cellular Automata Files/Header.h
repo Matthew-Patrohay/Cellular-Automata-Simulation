@@ -3,7 +3,12 @@
 //--------- Global Variables ---------
 int SIMULATION_WIDTH = 500; // Width of Game Window
 int SIMULATION_HEIGHT = 500; // Height of Game Window
-float SIMULATION_GRID_RESOLUTION = 50; // Width and Height (Square) of Simulation Grid
+float SIMULATION_GRID_RESOLUTION = 100; // Width and Height (Square) of Simulation Grid (Minimum of 5 because of walls)
+
+//--------- Debugging Setting Variables ---------
+int slowspeed = 1; // Slow down each frame by this many seconds
+bool countWaterON = true; // Count number of water particles being rendered and print value;
+int waterCount = 0;
 
 //--------- Structures ---------
 // A single point for triangle generation
@@ -34,8 +39,8 @@ typedef enum pixel_element
 // The velocity Data for a pixel
 typedef struct velocity_vector
 {
-    float x;
-    float y;
+    int x;
+    int y;
 } velocity_vector;
 
 // All the data stored in a pixel
