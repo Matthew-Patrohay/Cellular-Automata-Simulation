@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1B9BD0D5278943DC005D5E80 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B9BD0D4278943DC005D5E80 /* main.c */; };
+		1B9BD0DD27894812005D5E80 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9BD0DC27894812005D5E80 /* OpenGL.framework */; };
+		1B9BD0DF2789485B005D5E80 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9BD0DE2789485B005D5E80 /* libglfw.3.3.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		1B9BD0D1278943DC005D5E80 /* Basic OpenGL C Template */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Basic OpenGL C Template"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B9BD0D4278943DC005D5E80 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		1B9BD0DC27894812005D5E80 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		1B9BD0DE2789485B005D5E80 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../../../opt/homebrew/Cellar/glfw/3.3.6/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +36,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B9BD0DF2789485B005D5E80 /* libglfw.3.3.dylib in Frameworks */,
+				1B9BD0DD27894812005D5E80 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +49,7 @@
 			children = (
 				1B9BD0D3278943DC005D5E80 /* Basic OpenGL C Template */,
 				1B9BD0D2278943DC005D5E80 /* Products */,
+				1B9BD0DB27894812005D5E80 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +67,15 @@
 				1B9BD0D4278943DC005D5E80 /* main.c */,
 			);
 			path = "Basic OpenGL C Template";
+			sourceTree = "<group>";
+		};
+		1B9BD0DB27894812005D5E80 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1B9BD0DE2789485B005D5E80 /* libglfw.3.3.dylib */,
+				1B9BD0DC27894812005D5E80 /* OpenGL.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,9 +256,15 @@
 		1B9BD0D9278943DC005D5E80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SP59P2Z4D3;
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = /opt/homebrew/Cellar/glfw/3.3.6/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/homebrew/Cellar/glfw/3.3.6/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -250,9 +272,15 @@
 		1B9BD0DA278943DC005D5E80 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SP59P2Z4D3;
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = /opt/homebrew/Cellar/glfw/3.3.6/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/homebrew/Cellar/glfw/3.3.6/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
