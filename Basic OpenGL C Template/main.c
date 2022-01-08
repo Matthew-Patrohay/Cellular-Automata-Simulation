@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 
 //--------- Global Variables ---------
@@ -16,6 +17,39 @@ typedef struct triangle_point
     float y_value;
     float z_value;
 } triangle_point;
+
+// The defining color for a pixel
+typedef struct rgb_color_value
+{
+    float red;
+    float green;
+    float blue;
+} rgb_color_value;
+
+// The element of the pixel
+typedef enum pixel_element
+{
+    WATER = 'w',
+    AIR = '#',
+    WALL = 'x',
+    STONE = 's'
+} pixel_element;
+
+// The velocity Data for a pixel
+typedef struct velocity_vector
+{
+    float x;
+    float y;
+} velocity_vector;
+
+// All the data stored in a pixel
+typedef struct simulation_pixel
+{
+    bool updated_this_cycle;
+    velocity_vector velocity;
+    pixel_element element;
+    rgb_color_value color;
+} simulation_pixel;
 
 //--------- Declare functions ---------
 void makeSquare(float x_cord, float y_cord, float z_cord, float red_value, float green_value, float blue_value, float width);
