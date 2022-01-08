@@ -5,6 +5,7 @@ void makeSquare(float x_cord, float y_cord, float z_cord, float red_value, float
 static void error_callback(int error, const char* description);
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 float randomZeroOne(void);
+void render_simulation_frame(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION]);
 
 //--------- Define functions ---------
 // Create a square with the input of the center of the square, rgb color of the square, and the width
@@ -58,5 +59,30 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 float randomZeroOne(void)
 {
     return((float) rand() / RAND_MAX);
+}
+
+void render_simulation_frame(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION])
+{
+    // Render Pixels
+    for (int i = 0; i < SIMULATION_GRID_RESOLUTION; i++)
+    {
+        for (int j = 0; j < SIMULATION_GRID_RESOLUTION; j++) {
+            // Wall Rendering
+            if (pixel_data_array[i][j].element == WALL)
+            {
+                makeSquare(-1 + ((1/SIMULATION_GRID_RESOLUTION) * i * 2) + (1/SIMULATION_GRID_RESOLUTION), -1 + ((1/SIMULATION_GRID_RESOLUTION) * j * 2) + (1/SIMULATION_GRID_RESOLUTION), 0, 0.2, 0.2, 0.2, 2/SIMULATION_GRID_RESOLUTION);
+            }
+            // Water Rendering
+            if (pixel_data_array[i][j].element == WATER)
+            {
+                makeSquare(-1 + ((1/SIMULATION_GRID_RESOLUTION) * i * 2) + (1/SIMULATION_GRID_RESOLUTION), -1 + ((1/SIMULATION_GRID_RESOLUTION) * j * 2) + (1/SIMULATION_GRID_RESOLUTION), 0, 0, 0, 1, 2/SIMULATION_GRID_RESOLUTION);
+            }
+            // Air Rendering
+            if (pixel_data_array[i][j].element == AIR)
+            {
+                makeSquare(-1 + ((1/SIMULATION_GRID_RESOLUTION) * i * 2) + (1/SIMULATION_GRID_RESOLUTION), -1 + ((1/SIMULATION_GRID_RESOLUTION) * j * 2) + (1/SIMULATION_GRID_RESOLUTION), 0, 0.8, 0.8, 1, 2/SIMULATION_GRID_RESOLUTION);
+            }
+        }
+    }
 }
 #endif

@@ -30,7 +30,7 @@ int main(void)
     glfwSetKeyCallback(window, key_callback);
 
     // Generate an array for the simulation pixels
-    simulation_pixel pixel_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION];
+    simulation_pixel pixel_array[(int) SIMULATION_GRID_RESOLUTION][(int) SIMULATION_GRID_RESOLUTION];
     for (int i = 0; i < SIMULATION_GRID_RESOLUTION; i++)
     {
         for (int j = 0; j < SIMULATION_GRID_RESOLUTION; j++)
@@ -66,6 +66,9 @@ int main(void)
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(-ratio, ratio, -1, 1, 1, -1);
+        
+        // Render the current state of the pixel array
+        render_simulation_frame(pixel_array);
         
         // Swap front and back buffers and poll events
         glfwSwapBuffers(window);

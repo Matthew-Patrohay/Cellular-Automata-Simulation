@@ -44,7 +44,6 @@ typedef struct simulation_pixel
     bool updated_this_cycle;
     velocity_vector velocity;
     pixel_element element;
-    rgb_color_value color;
 } simulation_pixel;
 
 #endif
