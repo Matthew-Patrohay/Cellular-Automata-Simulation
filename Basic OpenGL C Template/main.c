@@ -3,88 +3,61 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdbool.h>
-
-//--------- Global Variables ---------
-int SIMULATION_WIDTH = 500; // Width of Game Window
-int SIMULATION_HEIGHT = 500; // Height of Game Window
-float SIMULATION_GRID_RESOLUTION = 50; // Width and Height (Square) of Simulation Grid
-
-//--------- Structures ---------
-// A single point for triangle generation
-typedef struct triangle_point
-{
-    float x_value;
-    float y_value;
-    float z_value;
-} triangle_point;
-
-// The defining color for a pixel
-typedef struct rgb_color_value
-{
-    float red;
-    float green;
-    float blue;
-} rgb_color_value;
-
-// The element of the pixel
-typedef enum pixel_element
-{
-    WATER = 'w',
-    AIR = '#',
-    WALL = 'x',
-    STONE = 's'
-} pixel_element;
-
-// The velocity Data for a pixel
-typedef struct velocity_vector
-{
-    float x;
-    float y;
-} velocity_vector;
-
-// All the data stored in a pixel
-typedef struct simulation_pixel
-{
-    bool updated_this_cycle;
-    velocity_vector velocity;
-    pixel_element element;
-    rgb_color_value color;
-} simulation_pixel;
-
-//--------- Declare functions ---------
-void makeSquare(float x_cord, float y_cord, float z_cord, float red_value, float green_value, float blue_value, float width);
-static void error_callback(int error, const char* description);
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+#include "Header.h"
 
 // ---------- MAIN FUNCTION ----------
 int main(void)
 {
+    // Create Window
     GLFWwindow* window;
     glfwSetErrorCallback(error_callback);
 
-    /* Initialize the library */
+    // Start glfw
     if (!glfwInit())
         return -1;
 
-    /* Create a windowed mode window and its OpenGL context */
+    // Create Window
     window = glfwCreateWindow(SIMULATION_WIDTH, SIMULATION_HEIGHT, "Cellular Automata", NULL, NULL);
-    printf("Test");
     if (!window)
     {
         glfwTerminate();
         return -1;
     }
 
-    /* Make the window's context current */
+    // Make window context current
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
 
-    // ---------- Graphics Loop ----------
+    // Generate an array for the simulation pixels
+    simulation_pixel pixel_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION];
+    for (int i = 0; i < SIMULATION_GRID_RESOLUTION; i++)
+    {
+        for (int j = 0; j < SIMULATION_GRID_RESOLUTION; j++)
+        {
+            //Set all current pixels to air
+            pixel_array[i][j].element = AIR;
+            
+            //Set a few random pixels to water for testing
+            if (randomZeroOne() > 0.9)
+            {
+                pixel_array[i][j].element = WATER;
+            }
+            
+            //Set the border to walls
+            if (i <= 1 || j <= 1 || i >= (SIMULATION_GRID_RESOLUTION - 2) || j >= (SIMULATION_GRID_RESOLUTION - 2))
+            {
+                pixel_array[i][j].element = WALL;
+            }
+        }
+    }
+    
+    // ---------- Main Graphics Loop ----------
     while (!glfwWindowShouldClose(window))
     {
         // Maintain aspect ratio when rendering
         float ratio;
-        int width, height;
+        int width;
+        int height;
         glfwGetFramebufferSize(window, &width, &height);
         ratio = width / (float) height;
         glViewport(0, 0, width, height);
@@ -93,12 +66,12 @@ int main(void)
         glLoadIdentity();
         glOrtho(-ratio, ratio, -1, 1, 1, -1);
         
-        makeSquare(0, 0, 0, 1, 1, 1, 2);
-        
-        /* Swap front and back buffers */
+        // Swap front and back buffers and poll events
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    
+    // Close window and end glfw
     glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
@@ -148,4 +121,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
+}
+float randomZeroOne(void)
+{
+    return((float) rand() / RAND_MAX);
 }

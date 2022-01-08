@@ -25,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1B55AC24278A013B00D668A6 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
 		1B9BD0D1278943DC005D5E80 /* Basic OpenGL C Template */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Basic OpenGL C Template"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B9BD0D4278943DC005D5E80 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		1B9BD0DC27894812005D5E80 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -65,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				1B9BD0D4278943DC005D5E80 /* main.c */,
+				1B55AC24278A013B00D668A6 /* Header.h */,
 			);
 			path = "Basic OpenGL C Template";
 			sourceTree = "<group>";
