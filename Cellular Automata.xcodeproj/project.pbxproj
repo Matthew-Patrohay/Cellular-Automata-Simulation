@@ -48,7 +48,7 @@
 		1B9BD0C8278943DC005D5E80 = {
 			isa = PBXGroup;
 			children = (
-				1B9BD0D3278943DC005D5E80 /* Basic OpenGL C Template */,
+				1B9BD0D3278943DC005D5E80 /* Cellular Automata Files */,
 				1B9BD0D2278943DC005D5E80 /* Products */,
 				1B9BD0DB27894812005D5E80 /* Frameworks */,
 			);
@@ -62,13 +62,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1B9BD0D3278943DC005D5E80 /* Basic OpenGL C Template */ = {
+		1B9BD0D3278943DC005D5E80 /* Cellular Automata Files */ = {
 			isa = PBXGroup;
 			children = (
 				1B9BD0D4278943DC005D5E80 /* main.c */,
 				1B55AC24278A013B00D668A6 /* Header.h */,
 			);
-			path = "Basic OpenGL C Template";
+			path = "Cellular Automata Files";
 			sourceTree = "<group>";
 		};
 		1B9BD0DB27894812005D5E80 /* Frameworks */ = {
@@ -114,7 +114,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1B9BD0CC278943DC005D5E80 /* Build configuration list for PBXProject "Basic OpenGL C Template" */;
+			buildConfigurationList = 1B9BD0CC278943DC005D5E80 /* Build configuration list for PBXProject "Cellular Automata" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -294,7 +294,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1B9BD0CC278943DC005D5E80 /* Build configuration list for PBXProject "Basic OpenGL C Template" */ = {
+		1B9BD0CC278943DC005D5E80 /* Build configuration list for PBXProject "Cellular Automata" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1B9BD0D6278943DC005D5E80 /* Debug */,
