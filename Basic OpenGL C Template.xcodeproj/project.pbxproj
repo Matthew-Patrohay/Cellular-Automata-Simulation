@@ -256,10 +256,12 @@
 		1B9BD0D9278943DC005D5E80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SP59P2Z4D3;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				HEADER_SEARCH_PATHS = /opt/homebrew/Cellar/glfw/3.3.6/include;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -272,10 +274,12 @@
 		1B9BD0DA278943DC005D5E80 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SP59P2Z4D3;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				HEADER_SEARCH_PATHS = /opt/homebrew/Cellar/glfw/3.3.6/include;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

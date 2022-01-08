@@ -4,10 +4,10 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-
 //--------- Global Variables ---------
 int SIMULATION_WIDTH = 500; // Width of Game Window
 int SIMULATION_HEIGHT = 500; // Height of Game Window
+float SIMULATION_GRID_RESOLUTION = 50; // Width and Height (Square) of Simulation Grid
 
 //--------- Structures ---------
 // A single point for triangle generation
@@ -53,16 +53,8 @@ typedef struct simulation_pixel
 
 //--------- Declare functions ---------
 void makeSquare(float x_cord, float y_cord, float z_cord, float red_value, float green_value, float blue_value, float width);
-
-static void error_callback(int error, const char* description)
-{
-    fputs(description, stderr);
-}
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-}
+static void error_callback(int error, const char* description);
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 // ---------- MAIN FUNCTION ----------
 int main(void)
@@ -147,4 +139,13 @@ void makeSquare(float x_cord, float y_cord, float z_cord, float red_value, float
     glVertex3f(point_C.x_value, point_C.y_value, point_C.z_value);
     glVertex3f(point_D.x_value, point_D.y_value, point_D.z_value);
     glEnd();
+}
+static void error_callback(int error, const char* description)
+{
+    fputs(description, stderr);
+}
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, GL_TRUE);
 }
