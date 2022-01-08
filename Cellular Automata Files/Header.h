@@ -1,10 +1,3 @@
-//
-//  Header.h
-//  Basic OpenGL C Template
-//
-//  Created by Matthew Patrohay on 1/8/22.
-//
-
 #ifndef Header_h
 #define Header_h
 //--------- Global Variables ---------
