@@ -30,6 +30,7 @@
 		1B9BD0D4278943DC005D5E80 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		1B9BD0DC27894812005D5E80 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		1B9BD0DE2789485B005D5E80 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../../../opt/homebrew/Cellar/glfw/3.3.6/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
+		1BD12D5E278A0CC500ED1C2C /* Functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Functions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +68,7 @@
 			children = (
 				1B9BD0D4278943DC005D5E80 /* main.c */,
 				1B55AC24278A013B00D668A6 /* Header.h */,
+				1BD12D5E278A0CC500ED1C2C /* Functions.h */,
 			);
 			path = "Cellular Automata Files";
 			sourceTree = "<group>";

@@ -47,10 +47,4 @@ typedef struct simulation_pixel
     rgb_color_value color;
 } simulation_pixel;
 
-//--------- Declare functions ---------
-void makeSquare(float x_cord, float y_cord, float z_cord, float red_value, float green_value, float blue_value, float width);
-static void error_callback(int error, const char* description);
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-float randomZeroOne(void);
-
-#endif /* Header_h */
+#endif
