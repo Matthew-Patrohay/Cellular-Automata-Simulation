@@ -6,9 +6,11 @@ int SIMULATION_HEIGHT = 500; // Height of Game Window
 float SIMULATION_GRID_RESOLUTION = 100; // Width and Height (Square) of Simulation Grid (Minimum of 5 because of walls)
 
 //--------- Debugging Setting Variables ---------
-int slowspeed = 1; // Slow down each frame by this many seconds
-bool countWaterON = true; // Count number of water particles being rendered and print value;
+int slowspeed = 0; // Slow down each frame by this many seconds
+bool countWaterON = false; // Count number of water particles being rendered and print value;
+
 int waterCount = 0;
+int frameCount = 0;
 
 //--------- Structures ---------
 // A single point for triangle generation

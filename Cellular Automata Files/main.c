@@ -52,7 +52,7 @@ int main(void)
             
             // Set inital velocities to zero
             pixel_array[i][j].velocity.x = 0;
-            pixel_array[i][j].velocity.y = 0;
+            pixel_array[i][j].velocity.y = 3;
             
             // Set initial update value to false
             pixel_array[i][j].updated_this_cycle = false;
@@ -87,8 +87,10 @@ int main(void)
         if (slowspeed > 0) {
             sleep(slowspeed);
         }
-        if (countWaterON == true) {
-            printf("Water Particle Count = %d\n", waterCount);
+        if (countWaterON == true)
+        {
+            frameCount++;
+            printf("Water Particle Count = %d on frame %d\n", waterCount, frameCount);
             waterCount = 0;
         }
     }
