@@ -1,12 +1,12 @@
 #ifndef Header_h
 #define Header_h
 //--------- Global Variables ---------
-int SIMULATION_WIDTH = 500; // Width of Game Window
-int SIMULATION_HEIGHT = 500; // Height of Game Window
-float SIMULATION_GRID_RESOLUTION = 100; // Width and Height (Square) of Simulation Grid (Minimum of 5 because of walls)
+int SIMULATION_WIDTH = 100; // Width of Game Window
+int SIMULATION_HEIGHT = 100; // Height of Game Window
+float SIMULATION_GRID_RESOLUTION = 50; // Width and Height (Square) of Simulation Grid (Minimum of 5 because of walls)
 
 //--------- Debugging Setting Variables ---------
-int slowspeed = 0; // Slow down each frame by this many seconds
+float slowspeed = 0; // Slow down each frame by this many seconds
 bool countWaterON = false; // Count number of water particles being rendered and print value;
 
 int waterCount = 0;

@@ -58,14 +58,12 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 }
 
 // Return a quasi-random float value between 0 and 1
-float randomZeroOne(void)
-{
+float randomZeroOne(void) {
     return((float) rand() / RAND_MAX);
 }
 
 // Render thr current state of the pixel array input
-void render_frame(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION])
-{
+void render_frame(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION]) {
     // Render Pixels
     for (int i = 0; i < SIMULATION_GRID_RESOLUTION; i++)
     {
@@ -94,8 +92,7 @@ void render_frame(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUT
 }
 
 // Update the current state of the entire pixel array inputted
-void master_update(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION])
-{
+void master_update(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION]) {
     for (int x = 0; x < SIMULATION_GRID_RESOLUTION; x++)
     {
         for (int y = 0; y < SIMULATION_GRID_RESOLUTION; y++) {
@@ -112,11 +109,9 @@ void master_update(simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLU
 }
 
 // Update a water particle when detected. (x, y) is location of detected water particle
-void water_update(int x, int y, simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION])
-{
+void water_update(int x, int y, simulation_pixel pixel_data_array[(int)SIMULATION_GRID_RESOLUTION][(int)SIMULATION_GRID_RESOLUTION]) {
     // Case 1 : There is air under the water particle
-    if (pixel_data_array[x][y-1].element == AIR)
-    {
+    if (pixel_data_array[x][y-1].element == AIR) {
         // Decrement velocity as it falls
         pixel_data_array[x][y].velocity.y--;
         int fall_distance = -1;
@@ -135,18 +130,17 @@ void water_update(int x, int y, simulation_pixel pixel_data_array[(int)SIMULATIO
     }
     
     // Case 2 : There is NOT Air under the water particle
-    if (pixel_data_array[x][y-1].element != AIR)
-    {
+    if (pixel_data_array[x][y-1].element != AIR) {
         if (pixel_data_array[x][y].velocity.x == 0)
         {
             if (randomZeroOne() > 0.5) {
-                pixel_data_array[x][y].velocity.x = pixel_data_array[x][y].velocity.y++;
-                pixel_data_array[x][y].velocity.y++;
+                pixel_data_array[x][y].velocity.x = pixel_data_array[x][y].velocity.y;
+                pixel_data_array[x][y].velocity.y = 0;
             }
             else
             {
-                pixel_data_array[x][y].velocity.x = -pixel_data_array[x][y].velocity.y--;
-                pixel_data_array[x][y].velocity.y++;
+                pixel_data_array[x][y].velocity.x = -pixel_data_array[x][y].velocity.y;
+                pixel_data_array[x][y].velocity.y = 0;
             }
         }
         if (pixel_data_array[x][y].velocity.x > 0 && pixel_data_array[x+1][y-1].element == AIR) {
@@ -158,8 +152,7 @@ void water_update(int x, int y, simulation_pixel pixel_data_array[(int)SIMULATIO
             // Label particle as rendered
             pixel_data_array[x+1][y-1].updated_this_cycle = true;
         }
-        if (pixel_data_array[x][y].velocity.x < 0 && pixel_data_array[x-1][y-1].element == AIR)
-        {
+        if (pixel_data_array[x][y].velocity.x < 0 && pixel_data_array[x-1][y-1].element == AIR) {
             // Switch air and water particle
             simulation_pixel temp = pixel_data_array[x-1][y-1];
             pixel_data_array[x-1][y-1] = pixel_data_array[x][y];
@@ -168,47 +161,109 @@ void water_update(int x, int y, simulation_pixel pixel_data_array[(int)SIMULATIO
             // Label particle as rendered
             pixel_data_array[x-1][y-1].updated_this_cycle = true;
         }
+        if (pixel_data_array[x][y].velocity.x >= 0 && pixel_data_array[x+1][y-1].element != AIR) {
+            pixel_data_array[x][y].velocity.x--;
+        }
+        if (pixel_data_array[x][y].velocity.x <= 0 && pixel_data_array[x-1][y-1].element != AIR) {
+            pixel_data_array[x][y].velocity.x++;
+        }
     }
     
     // Case 3 : There is NOT air under the bottom 3
-    if (pixel_data_array[x-1][y-1].element != AIR && pixel_data_array[x][y-1].element != AIR && pixel_data_array[x+1][y-1].element != AIR)
-    {
-        if (pixel_data_array[x][y].velocity.x < 0 && pixel_data_array[x-1][y].element == AIR) {
-            // Switch air and water particle
-            simulation_pixel temp = pixel_data_array[x-1][y];
-            pixel_data_array[x-1][y] = pixel_data_array[x][y];
-            pixel_data_array[x][y] = temp;
+    if (pixel_data_array[x-1][y-1].element != AIR && pixel_data_array[x][y-1].element != AIR && pixel_data_array[x+1][y-1].element != AIR) {
+        
+        if (pixel_data_array[x][y].velocity.x > 0) {
+            // Increment as it spreads
+            pixel_data_array[x][y].velocity.x++;
+            int horiz_velocity_pos = 0;
+            while (horiz_velocity_pos < pixel_data_array[x][y].velocity.x && pixel_data_array[x + (horiz_velocity_pos + 1)][y].element == AIR) {
+                horiz_velocity_pos++;
+            }
+            if (horiz_velocity_pos != 0) {
+                // Switch air and water particle
+                simulation_pixel temp = pixel_data_array[x + horiz_velocity_pos][y];
+                pixel_data_array[x + horiz_velocity_pos][y] = pixel_data_array[x][y];
+                pixel_data_array[x][y] = temp;
+                
+                // Label particle as rendered
+                pixel_data_array[x + horiz_velocity_pos][y].velocity.x = horiz_velocity_pos;
+                pixel_data_array[x + horiz_velocity_pos][y].updated_this_cycle = true;
+            } else {
+                pixel_data_array[x][y].velocity.x = -pixel_data_array[x][y].velocity.x;
+            }
             
-            // Label particle as rendered
-            pixel_data_array[x-1][y].updated_this_cycle = true;
-        } else if (pixel_data_array[x][y].velocity.x > 0 && pixel_data_array[x+1][y].element == AIR)
-        {
-            // Switch air and water particle
-            simulation_pixel temp = pixel_data_array[x+1][y];
-            pixel_data_array[x+1][y] = pixel_data_array[x][y];
-            pixel_data_array[x][y] = temp;
-            
-            // Label particle as rendered
-            pixel_data_array[x+1][y].updated_this_cycle = true;
-        } else if (pixel_data_array[x-1][y].element == AIR)
-        {
-            // Switch air and water particle
-            simulation_pixel temp = pixel_data_array[x-1][y];
-            pixel_data_array[x-1][y] = pixel_data_array[x][y];
-            pixel_data_array[x][y] = temp;
-            
-            // Label particle as rendered
-            pixel_data_array[x-1][y].updated_this_cycle = true;
-        } else if (pixel_data_array[x+1][y].element == AIR)
-        {
-            // Switch air and water particle
-            simulation_pixel temp = pixel_data_array[x+1][y];
-            pixel_data_array[x+1][y] = pixel_data_array[x][y];
-            pixel_data_array[x][y] = temp;
-            
-            // Label particle as rendered
-            pixel_data_array[x+1][y].updated_this_cycle = true;
         }
+        if (pixel_data_array[x][y].velocity.x < 0) {
+            // Increment as it spreads
+            pixel_data_array[x][y].velocity.x--;
+            int horiz_velocity_pos = 0;
+            while (horiz_velocity_pos > pixel_data_array[x][y].velocity.x && pixel_data_array[x - (horiz_velocity_pos + 1)][y].element == AIR) {
+                horiz_velocity_pos--;
+            }
+            if (horiz_velocity_pos != 0) {
+                // Switch air and water particle
+                simulation_pixel temp = pixel_data_array[x + horiz_velocity_pos][y];
+                pixel_data_array[x + horiz_velocity_pos][y] = pixel_data_array[x][y];
+                pixel_data_array[x][y] = temp;
+                
+                // Label particle as rendered
+                pixel_data_array[x + horiz_velocity_pos][y].velocity.x = horiz_velocity_pos;
+                pixel_data_array[x + horiz_velocity_pos][y].updated_this_cycle = true;
+            } else {
+                pixel_data_array[x][y].velocity.x = -pixel_data_array[x][y].velocity.x;
+            }
+            
+        }
+        if (pixel_data_array[x][y].velocity.x == 0) {
+            if (randomZeroOne() > 0.5) {
+                pixel_data_array[x][y].velocity.x = -1;
+            }
+            else
+            {
+                pixel_data_array[x][y].velocity.x = 1;
+            }
+        }
+        
+        
+        // OLD WORKING CODE
+//        if (pixel_data_array[x][y].velocity.x < 0 && pixel_data_array[x-1][y].element == AIR) {
+//            // Switch air and water particle
+//            simulation_pixel temp = pixel_data_array[x-1][y];
+//            pixel_data_array[x-1][y] = pixel_data_array[x][y];
+//            pixel_data_array[x][y] = temp;
+//
+//            // Label particle as rendered
+//            pixel_data_array[x-1][y].updated_this_cycle = true;
+//        } else if (pixel_data_array[x][y].velocity.x > 0 && pixel_data_array[x+1][y].element == AIR)
+//        {
+//            // Switch air and water particle
+//            simulation_pixel temp = pixel_data_array[x+1][y];
+//            pixel_data_array[x+1][y] = pixel_data_array[x][y];
+//            pixel_data_array[x][y] = temp;
+//
+//            // Label particle as rendered
+//            pixel_data_array[x+1][y].updated_this_cycle = true;
+//        } else if (pixel_data_array[x-1][y].element == AIR)
+//        {
+//            // Switch air and water particle
+//            simulation_pixel temp = pixel_data_array[x-1][y];
+//            pixel_data_array[x-1][y] = pixel_data_array[x][y];
+//            pixel_data_array[x][y] = temp;
+//
+//            // Label particle as rendered
+//            pixel_data_array[x-1][y].updated_this_cycle = true;
+//        } else if (pixel_data_array[x+1][y].element == AIR)
+//        {
+//            // Switch air and water particle
+//            simulation_pixel temp = pixel_data_array[x+1][y];
+//            pixel_data_array[x+1][y] = pixel_data_array[x][y];
+//            pixel_data_array[x][y] = temp;
+//
+//            // Label particle as rendered
+//            pixel_data_array[x+1][y].updated_this_cycle = true;
+//        }
+        
+        
     }
     
 }

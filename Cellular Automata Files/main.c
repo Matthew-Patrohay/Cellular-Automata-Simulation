@@ -25,6 +25,9 @@ int main(void)
         return -1;
     }
 
+    // Cursor setup
+    
+    
     // Make window context current
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
@@ -52,12 +55,33 @@ int main(void)
             
             // Set inital velocities to zero
             pixel_array[i][j].velocity.x = 0;
-            pixel_array[i][j].velocity.y = 3;
+            pixel_array[i][j].velocity.y = 0;
             
             // Set initial update value to false
             pixel_array[i][j].updated_this_cycle = false;
         }
     }
+    
+    // Generate a wall border in the middle
+    for (int i = 0; i < SIMULATION_GRID_RESOLUTION; i++)
+    {
+        for (int j = 0; j < SIMULATION_GRID_RESOLUTION; j++)
+        {
+            // Set the line to walls
+            if (j == SIMULATION_GRID_RESOLUTION/2 && (i < SIMULATION_GRID_RESOLUTION - 10 && i > 10))
+            {
+                pixel_array[i][j].element = WALL;
+            }
+            
+            // Set inital velocities to zero
+            pixel_array[i][j].velocity.x = 0;
+            pixel_array[i][j].velocity.y = 0;
+            
+            // Set initial update value to false
+            pixel_array[i][j].updated_this_cycle = false;
+        }
+    }
+    
     
     // ---------- Main Graphics Loop ----------
     while (!glfwWindowShouldClose(window))
@@ -73,6 +97,10 @@ int main(void)
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(-ratio, ratio, -1, 1, 1, -1);
+        
+        
+        
+        
         // Update the current state of the pixel array
         master_update(pixel_array);
         
@@ -85,7 +113,7 @@ int main(void)
         
         // Sleep to simulate slow motion
         if (slowspeed > 0) {
-            sleep(slowspeed);
+            usleep((int) (slowspeed * 1000000));
         }
         if (countWaterON == true)
         {
