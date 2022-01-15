@@ -42,9 +42,14 @@ int main(void)
             pixel_array[i][j].element = AIR;
             
             // Set a few random pixels to water for testing
-            if (randomZeroOne() > 0.9)
+            if (randomZeroOne() > 0.8)
             {
                 pixel_array[i][j].element = WATER;
+            }
+            
+            if (randomZeroOne() > 0.95)
+            {
+                pixel_array[i][j].element = SAND;
             }
             
             // Set the border to walls
