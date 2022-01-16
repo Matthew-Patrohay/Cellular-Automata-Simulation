@@ -145,42 +145,104 @@ void water_update(int x, int y, simulation_pixel pixel_data_array[(int)SIMULATIO
     
     // Case 2 : There is NOT Air under the water particle
     if (pixel_data_array[x][y-1].element != AIR) {
-        if (pixel_data_array[x][y].velocity.x == 0)
-        {
-            if (randomZeroOne() > 0.5) {
-                pixel_data_array[x][y].velocity.x = pixel_data_array[x][y].velocity.y;
-                pixel_data_array[x][y].velocity.y = 0;
-            }
-            else
+        
+        
+        // Bottom Left and Right are both available
+        if (pixel_data_array[x-1][y-1].element == AIR && pixel_data_array[x+1][y-1].element == AIR) {
+            // Give the particle a velocity
+            if (pixel_data_array[x][y].velocity.x == 0)
             {
-                pixel_data_array[x][y].velocity.x = -pixel_data_array[x][y].velocity.y;
-                pixel_data_array[x][y].velocity.y = 0;
+                if (randomZeroOne() > 0.5) {
+                    pixel_data_array[x][y].velocity.x = 1;
+                    //pixel_data_array[x][y].velocity.y = 0;
+                }
+                else
+                {
+                    pixel_data_array[x][y].velocity.x = -1;
+                    //pixel_data_array[x][y].velocity.y = 0;
+                }
             }
-        }
-        if (pixel_data_array[x][y].velocity.x > 0 && pixel_data_array[x+1][y-1].element == AIR) {
-            // Switch air and water particle
-            simulation_pixel temp = pixel_data_array[x+1][y-1];
-            pixel_data_array[x+1][y-1] = pixel_data_array[x][y];
-            pixel_data_array[x][y] = temp;
+            if (pixel_data_array[x][y].velocity.x > 0) {
+                // Update the particle
+                pixel_data_array[x][y].updated_this_cycle = true;
+                
+                // Switch air and water particle
+                simulation_pixel temp = pixel_data_array[x+1][y-1];
+                pixel_data_array[x+1][y-1] = pixel_data_array[x][y];
+                pixel_data_array[x][y] = temp;
+            }
+            if (pixel_data_array[x][y].velocity.x < 0) {
+                // Update the particle
+                pixel_data_array[x][y].updated_this_cycle = true;
+                
+                // Switch air and water particle
+                simulation_pixel temp = pixel_data_array[x-1][y-1];
+                pixel_data_array[x-1][y-1] = pixel_data_array[x][y];
+                pixel_data_array[x][y] = temp;
+            }
             
-            // Label particle as rendered
-            pixel_data_array[x+1][y-1].updated_this_cycle = true;
         }
-        if (pixel_data_array[x][y].velocity.x < 0 && pixel_data_array[x-1][y-1].element == AIR) {
+        
+        if (pixel_data_array[x-1][y-1].element == AIR && pixel_data_array[x+1][y-1].element != AIR && pixel_data_array[x][y].updated_this_cycle == false) {
+            // Update the particle
+            pixel_data_array[x][y].updated_this_cycle = true;
+            pixel_data_array[x][y].velocity.x = -1;
+            
             // Switch air and water particle
             simulation_pixel temp = pixel_data_array[x-1][y-1];
             pixel_data_array[x-1][y-1] = pixel_data_array[x][y];
             pixel_data_array[x][y] = temp;
-            
-            // Label particle as rendered
-            pixel_data_array[x-1][y-1].updated_this_cycle = true;
         }
-        if (pixel_data_array[x][y].velocity.x >= 0 && pixel_data_array[x+1][y-1].element != AIR) {
-            pixel_data_array[x][y].velocity.x--;
+        
+        if (pixel_data_array[x-1][y-1].element != AIR && pixel_data_array[x+1][y-1].element == AIR && pixel_data_array[x][y].updated_this_cycle == false) {
+            // Update the particle
+            pixel_data_array[x][y].updated_this_cycle = true;
+            pixel_data_array[x][y].velocity.x = 1;
+            // Switch air and water particle
+            simulation_pixel temp = pixel_data_array[x+1][y-1];
+            pixel_data_array[x+1][y-1] = pixel_data_array[x][y];
+            pixel_data_array[x][y] = temp;
         }
-        if (pixel_data_array[x][y].velocity.x <= 0 && pixel_data_array[x-1][y-1].element != AIR) {
-            pixel_data_array[x][y].velocity.x++;
-        }
+        
+        
+        // Case two working
+//        // Give the particle a velocity
+//        if (pixel_data_array[x][y].velocity.x == 0)
+//        {
+//            if (randomZeroOne() > 0.5) {
+//                pixel_data_array[x][y].velocity.x = 1;
+//                //pixel_data_array[x][y].velocity.y = 0;
+//            }
+//            else
+//            {
+//                pixel_data_array[x][y].velocity.x = -1;
+//                //pixel_data_array[x][y].velocity.y = 0;
+//            }
+//        }
+//        if (pixel_data_array[x][y].velocity.x > 0 && pixel_data_array[x+1][y-1].element == AIR) {
+//            // Switch air and water particle
+//            simulation_pixel temp = pixel_data_array[x+1][y-1];
+//            pixel_data_array[x+1][y-1] = pixel_data_array[x][y];
+//            pixel_data_array[x][y] = temp;
+//
+//            // Label particle as rendered
+//            pixel_data_array[x+1][y-1].updated_this_cycle = true;
+//        }
+//        if (pixel_data_array[x][y].velocity.x < 0 && pixel_data_array[x-1][y-1].element == AIR) {
+//            // Switch air and water particle
+//            simulation_pixel temp = pixel_data_array[x-1][y-1];
+//            pixel_data_array[x-1][y-1] = pixel_data_array[x][y];
+//            pixel_data_array[x][y] = temp;
+//
+//            // Label particle as rendered
+//            pixel_data_array[x-1][y-1].updated_this_cycle = true;
+//        }
+//        if (pixel_data_array[x][y].velocity.x >= 0 && pixel_data_array[x+1][y-1].element != AIR) {
+//            pixel_data_array[x][y].velocity.x--;
+//        }
+//        if (pixel_data_array[x][y].velocity.x <= 0 && pixel_data_array[x-1][y-1].element != AIR) {
+//            pixel_data_array[x][y].velocity.x++;
+//        }
     }
     
     // Case 3 : There is NOT air under the bottom 3
